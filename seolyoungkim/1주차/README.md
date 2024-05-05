@@ -30,7 +30,7 @@ public class Palindrome {
     }
 
     public static int palindrome(String str, int leftIdx, int rightIdx, int deleteCount) {
-        if (deleteCount >= 2) {
+        if (deleteCount >= 2) {  // deleteCount가 2 이상이면 아무것도아님 
             return 2;
         }
 
@@ -41,12 +41,12 @@ public class Palindrome {
                 continue;
             }
 
-            int firstResult = palindrome(str, leftIdx + 1, rightIdx, deleteCount + 1);
-            int secondResult = palindrome(str, leftIdx, rightIdx - 1, deleteCount + 1);
-            return Math.min(firstResult, secondResult);
+            int firstResult = palindrome(str, leftIdx + 1, rightIdx, deleteCount + 1);  // 왼쪽부터 이동시켜서 확인 
+            int secondResult = palindrome(str, leftIdx, rightIdx - 1, deleteCount + 1);  // 오른쪽부터 이동시켜서 확인 
+            return Math.min(firstResult, secondResult);  // 둘 중 숫자가 더 작은것 반환 (ex: 유사회문 결과 vs 아무것도 아닌 결과)
         }
 
-        return deleteCount;
+        return deleteCount;  // deleteCount = 0 -> 회문 , deleteCount = 1 -> 유사 회문 
     }
 }
 
