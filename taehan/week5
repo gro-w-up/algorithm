@@ -1,0 +1,50 @@
+
+## 1. 문제 정의
+
+1. LRUCache 는 가장 최근에 사용되지 않은 정보를 덮어씌우는 방식의 고정 크기 데이터맵임
+2. 빠른 접근과 수정을 위해서는 for 문을 사용하지 않아야 함..
+3. 모든 정보가 int 이나, value 는 String 같은 것의 확장성을 고려하면 정보는 MutableMap 으로,
+우선 순위는 List 로 다루는 것이 이상적으로 보임 
+    1. Node 를 사용하는 방식을 가장 먼저 고려해 보았으나 ( 이번 학습 단원이 연결 리스트이므로), 우선 순위를 다룰 때 for 문을 사용하지 않는 방법을 떠올리지 못함
+    2. 우선 순위와 key 가 가장 빠르게 접근해야 하므로, <key, value>, [priority] 방식이 가장 좋겠다 생각함
+4. 타임 아웃 등의 문제는 기존과 마찬가지로 고려할 필요가 없어 보임
+
+## 1차 코드 작성
+
+```kotlin
+
+class LRUCache(capacity: Int) {
+    var capacity = capacity
+    var cache = mutableMapOf<Int, Int>()
+    var priority = mutableListOf<Int>()
+
+    fun get(key: Int): Int {
+        if (cache.containsKey(key)) {
+            priority.remove(key)
+            priority.add(key)
+            return cache[key] as Int
+        }
+        return -1
+
+    }
+
+    fun put(key: Int, value: Int) {
+        if (cache.containsKey(key)) {
+            priority.remove(key)
+        } else if (cache.size == capacity) {
+            cache.remove(priority[0])
+            priority.removeAt(0)
+        }
+        cache[key] = value
+        priority.add(key)
+    }
+
+}
+```
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/213ef69f-0d1e-4d21-9468-12fe04ca65b6/6aaaa908-4e51-4b93-8315-8ed15ff9685d/Untitled.png)
+
+## 풀이 복기
+
+- 지금의 결과를 보니 O(n) 의 방식이 있었던 것 같음
+- 확실히 시간 단축 외에 문제 풀이는 큰 문제가 되지 않음
