@@ -25,12 +25,14 @@ public class Twitter {
         // 5-3. getNewsFeed 를 할 때 정배(userId = 1)이 호출했다고 하면 정배가 follow 한 사람들의 userId가(Set) 필요합니다.
         // 그런데 오답이 발생했던 이유는 정배가 직접 작성한 포스트도 가져와야하기 Set 에 자기 자신을 추가해줘야합니다.
         Set<Integer> follower = map.getOrDefault(userId, new HashSet<>());
+        // user id 에 해당하는 Set이 나옴 (팔로우 하는 사람들)
         follower.add(userId);
 
         int cnt = 0;
-        for (int i = posts.size() - 1; i >= 0 && cnt < 10; i—) {
+        for (int i = posts.size() - 1; i >= 0 && cnt < 10; i--) {
             Integer[] post = posts.get(i);
             // 모든 post 를 순회하면서, 포스트를 남긴 사람이 Set에 들어있는지 확인하면 됩니다.
+            // * 유저가 팔로우하는 사람들의 글이 나와야 함 + 내가 직접 쓴 글이 나와야함
             if (follower.contains(post[0])) {
                 newsFeed.add(post[1]);
                 cnt++;
